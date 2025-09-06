@@ -7,5 +7,5 @@ from src.database import Base
 class Composition(Base):
     __tablename__ = 'composition'
     
-    title: str
+    title: Mapped[str]
     composer_id: Mapped[UUID] = mapped_column(ForeignKey('musician.id'))

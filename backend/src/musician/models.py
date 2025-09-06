@@ -11,6 +11,8 @@ class MusicianType(Enum):
 
 
 class Musician(Base):
+    __tablename__ = 'musician'
+    
     name: Mapped[str]
     surname: Mapped[str]
     type: Mapped[MusicianType]

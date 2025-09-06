@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from schemas import SuccessResponse
+from src.schemas import SuccessResponse
 
 # --- FastAPI App ---
 app = FastAPI(

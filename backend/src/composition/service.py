@@ -14,8 +14,8 @@ class CompositionService:
             session.add(composition_db)
             await session.commit()
             await session.refresh(composition_db)
-            ensemble_schema = Composition.model_validate(composition_db)
-            return ensemble_schema
+            composition_schema = Composition.model_validate(composition_db)
+            return composition_schema
     
     async def get(self, composition_id: UUID):
         async with self.session_factory() as session:
@@ -32,12 +32,12 @@ class CompositionService:
                 
             await session.commit()
             await session.refresh(composition_db)
-            ensemble_schema = Composition.model_validate(composition_db)
-            return ensemble_schema
+            composition_schema = Composition.model_validate(composition_db)
+            return composition_schema
     
     async def delete(self, composition_id: UUID):
         async with self.session_factory() as session:
-            ensemble_db = await session.get(CompositionModel, composition_id)
-            await session.delete(ensemble_db)
+            composition_db = await session.get(CompositionModel, composition_id)
+            await session.delete(composition_db)
             await session.commit()
     

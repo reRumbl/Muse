@@ -14,8 +14,8 @@ class MusicianService:
             session.add(musician_db)
             await session.commit()
             await session.refresh(musician_db)
-            ensemble_schema = Musician.model_validate(musician_db)
-            return ensemble_schema
+            musician_schema = Musician.model_validate(musician_db)
+            return musician_schema
     
     async def get(self, musician_id: UUID):
         async with self.session_factory() as session:
@@ -32,12 +32,12 @@ class MusicianService:
                 
             await session.commit()
             await session.refresh(musician_db)
-            ensemble_schema = Musician.model_validate(musician_db)
-            return ensemble_schema
+            musician_schema = Musician.model_validate(musician_db)
+            return musician_schema
     
     async def delete(self, musician_id: UUID):
         async with self.session_factory() as session:
-            ensemble_db = await session.get(MusicianModel, musician_id)
-            await session.delete(ensemble_db)
+            musician_db = await session.get(MusicianModel, musician_id)
+            await session.delete(musician_db)
             await session.commit()
     

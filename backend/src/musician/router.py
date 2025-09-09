@@ -32,6 +32,7 @@ async def update_musician(
    
     return await service.update(musician_id, musician_data)
 
+
 @router.delete('/{musician_id}', response_model=SuccessResponse)
 async def delete_musician(
     musician_id: UUID,

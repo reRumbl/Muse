@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from src.schemas import SuccessResponse
+from src.ensemble.router import router as ensemble_router
 
 # --- FastAPI App ---
 app = FastAPI(
@@ -10,11 +11,16 @@ app = FastAPI(
     redoc_url=None
 )
 
+# --- Routers ---
+app.include_router(ensemble_router)
 
+
+# --- Root Endpoint ---
 @app.get('/')
 async def root():
     return SuccessResponse(message='This is Muse API')
 
 
+# --- Entry Point ---
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)

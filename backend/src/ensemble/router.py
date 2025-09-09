@@ -46,4 +46,5 @@ async def delete_ensemble(
     ensemble_id: UUID,
     service: EnsembleServiceDep
 ):
-    return await service.delete(ensemble_id)
+    await service.delete(ensemble_id)
+    return SuccessResponse(message='Ensemble deleted')

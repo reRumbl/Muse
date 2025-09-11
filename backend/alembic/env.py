@@ -12,6 +12,7 @@ from src.ensemble import models
 from src.musician import models
 from src.performance import models
 from src.record import models
+from src.release import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

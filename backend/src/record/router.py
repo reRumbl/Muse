@@ -40,3 +40,13 @@ async def delete_record(
 ):
     await service.delete(record_id)
     return SuccessResponse(message='Record deleted')    
+
+
+@router.post('/{record_id}/performances/{performance_id}', response_model=SuccessResponse)
+async def add_record_to_performance(
+    record_id: UUID, 
+    performance_id: UUID,
+    service: RecordServiceDep
+):
+    await service.add_record_to_performance(record_id, performance_id)
+    return SuccessResponse(message='Record added to performance')    

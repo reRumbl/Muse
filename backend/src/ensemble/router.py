@@ -48,3 +48,13 @@ async def delete_ensemble(
 ):
     await service.delete(ensemble_id)
     return SuccessResponse(message='Ensemble deleted')
+
+
+@router.post('/{ensemble_id}/musicians/{musician_id}', response_model=SuccessResponse)
+async def add_member_to_ensemble(
+    ensemble_id: UUID, 
+    musician_id: UUID,
+    service: EnsembleServiceDep
+):
+    await service.add_member_to_ensemble(ensemble_id, musician_id)
+    return SuccessResponse(message='Member added to ensemble') 

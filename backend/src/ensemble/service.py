@@ -1,7 +1,7 @@
 from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-from src.ensemble.models import EnsembleModel
+from src.ensemble.models import EnsembleModel, EnsembleMemberModel
 from src.ensemble.schemas import EnsembleCreate, EnsembleUpdate, Ensemble
 from src.composition.models import CompositionModel
 from src.composition.schemas import Composition
@@ -59,3 +59,13 @@ class EnsembleService:
             ensemble_db = await session.get(EnsembleModel, ensemble_id)
             await session.delete(ensemble_db)
             await session.commit()
+            
+    async def add_member_to_ensemble(self, musician_id: UUID, ensemble_id: UUID) -> None:
+        async with self.session_factory() as session:
+            ensemble_member_db = EnsembleMemberModel(
+                musician_id=musician_id,
+                ensemble_id=ensemble_id
+            )
+            session.add(ensemble_member_db)
+            await session.commit()
+            await session.refresh(ensemble_member_db)

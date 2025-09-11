@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-from src.record.models import RecordModel
+from src.record.models import RecordModel, RecordPerformanceModel
 from src.record.schemas import RecordCreate, RecordUpdate, Record
 
 
@@ -35,9 +35,19 @@ class RecordService:
             record_schema = Record.model_validate(record_db)
             return record_schema
     
-    async def delete(self, record_id: UUID):
+    async def delete(self, record_id: UUID) -> None:
         async with self.session_factory() as session:
             record_db = await session.get(RecordModel, record_id)
             await session.delete(record_db)
             await session.commit()
+            
+    async def add_record_to_performance(self, record_id: UUID, performance_id: UUID) -> None:
+        async with self.session_factory() as session:
+            record_performance_db = RecordPerformanceModel(
+                record_id=record_id, 
+                performance_id=performance_id
+            )
+            session.add(record_performance_db)
+            await session.commit()
+            await session.refresh(record_performance_db)
     

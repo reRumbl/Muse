@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class CompositionBase(BaseModel):
-    name: str
+    title: str
     composer_id: UUID
 
 
@@ -12,7 +12,7 @@ class CompositionCreate(CompositionBase):
 
 
 class CompositionUpdate(BaseModel):
-    name: str | None = None
+    title: str | None = None
     composer_id: UUID | None = None
 
 

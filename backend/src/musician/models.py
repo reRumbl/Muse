@@ -32,7 +32,7 @@ class MusicianModel(Base):
     )
     compositions: Mapped[list['CompositionModel']] = relationship(
         'CompositionModel', 
-        back_populates='musician',
+        back_populates='composer',
         lazy='selectin', 
         passive_deletes=True
     )

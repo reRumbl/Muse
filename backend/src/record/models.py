@@ -19,7 +19,7 @@ class RecordModel(Base):
     manufacturer_id: Mapped[UUID] = mapped_column(ForeignKey('company.id'))
     
     releases: Mapped[list['ReleaseModel']] = relationship(
-        'RecordReleaseModel', 
+        'ReleaseModel', 
         back_populates='record',
         lazy='selectin', 
         passive_deletes=True

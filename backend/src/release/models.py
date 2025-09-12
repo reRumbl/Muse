@@ -24,7 +24,7 @@ class ReleaseModel(Base):
     
     record: Mapped['RecordModel'] = relationship(
         'RecordModel', 
-        back_populates='records',
+        back_populates='releases',
         lazy='selectin', 
         passive_deletes=True
     )

@@ -27,7 +27,7 @@ class EnsembleModel(Base):
     musicians: Mapped[list['MusicianModel']] = relationship(
         'MusicianModel', 
         secondary='ensemble_member',
-        back_populates='ensemble',
+        back_populates='ensembles',
         lazy='selectin', 
         passive_deletes=True
     )

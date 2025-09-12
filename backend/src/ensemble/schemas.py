@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from src.ensemble.models import EnsembleType
 
 
@@ -18,4 +18,6 @@ class EnsembleUpdate(BaseModel):
     
 
 class Ensemble(EnsembleBase):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID

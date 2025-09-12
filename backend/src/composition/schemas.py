@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CompositionBase(BaseModel):
@@ -17,4 +17,6 @@ class CompositionUpdate(BaseModel):
 
 
 class Composition(CompositionBase):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID

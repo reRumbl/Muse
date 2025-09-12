@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from src.musician.models import MusicianType
 
 
@@ -20,4 +20,6 @@ class MusicianUpdate(BaseModel):
 
 
 class Musician(MusicianBase):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID

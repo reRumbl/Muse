@@ -1,6 +1,6 @@
 from datetime import date
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ReleaseBase(BaseModel):
@@ -30,4 +30,6 @@ class ReleaseUpdate(BaseModel):
 
 
 class Release(ReleaseBase):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID

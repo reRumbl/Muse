@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CompanyBase(BaseModel):
@@ -17,4 +17,6 @@ class CompanyUpdate(BaseModel):
 
 
 class Company(CompanyBase):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID

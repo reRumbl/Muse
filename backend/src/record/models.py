@@ -1,4 +1,3 @@
-from datetime import date
 from uuid import UUID
 from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey

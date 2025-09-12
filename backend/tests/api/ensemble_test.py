@@ -9,6 +9,21 @@ from tests.conftest import (
 
 class TestEnsemble:
     @pytest.mark.asyncio
+    async def test_create_ensemble(self, test_async_client: AsyncClient):
+        ensemble_data = {
+            'name': 'Test Ensamble',
+            'type': 'group'
+        }
+        
+        response = await test_async_client.post('/ensembles/', json=ensemble_data)
+        
+        assert response.status_code == 200
+        created_ensemble = response.json()
+        assert created_ensemble['name'] == 'Test Ensamble'
+        assert created_ensemble['type'] == 'group'
+        assert 'id' in created_ensemble
+    
+    @pytest.mark.asyncio
     async def test_get_ensemble_compositions_count(
         self,
         test_async_client: AsyncClient,
@@ -17,14 +32,14 @@ class TestEnsemble:
         create_musician_factory,
         create_performance_factory
     ):
-        # --- Случай 1: У нового ансамбля нет произведений ---
+        # --- Сценарий 1: У нового ансамбля нет произведений ---
         ensemble = await create_ensemble_factory()
 
         response = await test_async_client.get(f'/ensembles/{ensemble.id}/compositions/count')
         assert response.status_code == 200
         assert response.json()['count'] == 0
 
-        # --- Случай 2: Одно произведение ---
+        # --- Сценарий 2: Одно произведение ---
         composer = await create_musician_factory()
         composition = await create_composition_factory(composer.id)
         performance = await create_performance_factory(composition.id, ensemble.id)
@@ -33,7 +48,7 @@ class TestEnsemble:
         assert response.status_code == 200
         assert response.json()['count'] == 1
 
-        # --- Случай 3: Два разных произведения ---
+        # --- Сценарий 3: Два разных произведения ---
         composition_2 = await create_composition_factory(composer.id)
         performance_2 = await create_performance_factory(composition_2.id, ensemble.id)
 
@@ -41,7 +56,7 @@ class TestEnsemble:
         assert response.status_code == 200
         assert response.json()['count'] == 2
 
-        # --- Случай 4: Несколько исполнений одного и того же произведения не должны увеличивать счетчик ---
+        # --- Сценарий 4: Несколько исполнений одного и того же произведения не должны увеличивать счетчик ---
         performance_3 = await create_performance_factory(composition_2.id, ensemble.id)
 
         response = await test_async_client.get(f'/ensembles/{ensemble.id}/compositions/count')
@@ -61,14 +76,14 @@ class TestEnsemble:
         add_record_to_performance_factory,
         create_record_factory
     ):
-        # --- Случай 1: У нового ансамбля нет дисков ---
+        # --- Сценарий 1: У нового ансамбля нет дисков ---
         ensemble = await create_ensemble_factory()
         
         response = await test_async_client.get(f'/ensembles/{ensemble.id}/records')
         assert response.status_code == 200
         assert response.json() == []
         
-        # --- Случай 2: Один диск ---
+        # --- Сценарий 2: Один диск ---
         composer = await create_musician_factory()
         composition = await create_composition_factory(composer.id)
         performance = await create_performance_factory(composition.id, ensemble.id)
@@ -81,7 +96,7 @@ class TestEnsemble:
         ids = [rec['id'] for rec in response.json()]
         assert str(record.id) in ids
         
-        # --- Случай 3: Два разных диска ---
+        # --- Сценарий 3: Два разных диска ---
         composition_2 = await create_composition_factory(composer.id)
         performance_2 = await create_performance_factory(composition_2.id, ensemble.id)
         record_2 = await create_record_factory(company.id)
@@ -93,7 +108,7 @@ class TestEnsemble:
         assert str(record.id) in ids
         assert str(record_2.id) in ids
         
-        # --- Случай 4: Добавление нового диска существующего произведения должно учитываться ---
+        # --- Сценарий 4: Добавление нового диска существующего произведения должно учитываться ---
         record_3 = await create_record_factory(company.id)
         await add_record_to_performance_factory(record_3.id, performance_2.id)
         

@@ -23,6 +23,22 @@ async def get_record(
     return await service.get(record_id)
 
 
+@router.get('/top-selling/last-year', response_model=list[Record])
+async def get_top_selling_records_last_year(
+    service: RecordServiceDep,
+    limit: int = 10
+):
+    return await service.get_top_selling_records_last_year(limit)
+
+
+@router.get('/top-selling/this-year', response_model=list[Record])
+async def get_top_selling_records_this_year(
+    service: RecordServiceDep,
+    limit: int = 10
+):
+    return await service.get_top_selling_records_this_year(limit)
+
+
 @router.put('/{record_id}/update', response_model=Record)
 async def update_record(
     record_id: UUID,

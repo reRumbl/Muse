@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import date
 from typing import AsyncGenerator
 from pytest_asyncio import fixture
 from sqlalchemy import NullPool
@@ -87,6 +88,11 @@ async def record_service(test_session: AsyncSession) -> RecordService:
 
 
 @fixture(scope='function')
+async def release_service(test_session: AsyncSession) -> ReleaseService:
+    return ReleaseService(session=test_session)
+
+
+@fixture(scope='function')
 async def create_company_factory(company_service: CompanyService):
     async def _create_company(name: str = 'Test Company', address: str = 'Test Address'):
         return await company_service.create(CompanyCreate(name=name, address=address))
@@ -140,3 +146,28 @@ async def add_record_to_performance_factory(record_service: RecordService):
     async def _add_record_to_performance(record_id: UUID, performance_id: UUID):
         return await record_service.add_record_to_performance(record_id=record_id, performance_id=performance_id)
     return _add_record_to_performance
+
+
+@fixture(scope='function')
+async def create_release_factory(release_service: ReleaseService):
+    async def _create_release(
+        record_id: UUID,
+        wholesale_supplier_id: UUID,
+        release_date: date = date.today(),
+        wholesale_price: int = 100,
+        retail_price: int = 100,
+        last_year_sold: int = 1000,
+        this_year_sold: int = 1000,
+        in_stock: int = 100,
+    ):
+        return await release_service.create(ReleaseCreate(
+            record_id=record_id,
+            release_date=release_date,
+            wholesale_supplier_id=wholesale_supplier_id,
+            wholesale_price=wholesale_price,
+            retail_price=retail_price,
+            last_year_sold=last_year_sold,
+            this_year_sold=this_year_sold,
+            in_stock=in_stock
+        ))
+    return _create_release

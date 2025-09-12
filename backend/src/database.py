@@ -22,7 +22,7 @@ SessionFactory = async_sessionmaker(
 # --- DeclarativeBase Class ---
 class Base(AsyncAttrs, DeclarativeBase):
     id: Mapped[UUID] = mapped_column(
-        default=uuid4(), 
+        default=uuid4, 
         primary_key=True, 
         unique=True
     )

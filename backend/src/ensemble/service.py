@@ -6,6 +6,8 @@ from src.ensemble.schemas import EnsembleCreate, EnsembleUpdate, Ensemble
 from src.composition.models import CompositionModel
 from src.composition.schemas import Composition
 from src.performance.models import PerformanceModel
+from src.record.models import RecordModel, RecordPerformanceModel
+from src.record.schemas import Record
 
 
 class EnsembleService:
@@ -19,6 +21,15 @@ class EnsembleService:
         await self.session.refresh(ensemble_db)
         ensemble_schema = Ensemble.model_validate(ensemble_db)
         return ensemble_schema
+    
+    async def add_member_to_ensemble(self, musician_id: UUID, ensemble_id: UUID) -> None:
+        ensemble_member_db = EnsembleMemberModel(
+            musician_id=musician_id,
+            ensemble_id=ensemble_id
+        )
+        self.session.add(ensemble_member_db)
+        await self.session.commit()
+        await self.session.refresh(ensemble_member_db)
     
     async def get(self, ensemble_id: UUID) -> Ensemble:
         ensemble_db = await self.session.get(EnsembleModel, ensemble_id)
@@ -39,6 +50,18 @@ class EnsembleService:
         compositions_db = result.scalars().all()
         return [Composition.model_validate(c) for c in compositions_db]
     
+    async def get_all_records(self, ensemble_id: UUID) -> list[Record]:
+        query = (
+            select(RecordModel)
+            .join(RecordPerformanceModel, RecordModel.id == RecordPerformanceModel.record_id)
+            .join(PerformanceModel, RecordPerformanceModel.performance_id == PerformanceModel.id)
+            .where(PerformanceModel.ensemble_id == ensemble_id)
+            .distinct()
+        )
+        result = await self.session.execute(query)
+        records_db = result.scalars().all()
+        return [Record.model_validate(r) for r in records_db]
+        
     async def update(self, ensemble_id: UUID, ensemble_data: EnsembleUpdate) -> Ensemble:
         ensemble_db = await self.session.get(EnsembleModel, ensemble_id)
         
@@ -54,12 +77,3 @@ class EnsembleService:
         ensemble_db = await self.session.get(EnsembleModel, ensemble_id)
         await self.session.delete(ensemble_db)
         await self.session.commit()
-            
-    async def add_member_to_ensemble(self, musician_id: UUID, ensemble_id: UUID) -> None:
-        ensemble_member_db = EnsembleMemberModel(
-            musician_id=musician_id,
-            ensemble_id=ensemble_id
-        )
-        self.session.add(ensemble_member_db)
-        await self.session.commit()
-        await self.session.refresh(ensemble_member_db)

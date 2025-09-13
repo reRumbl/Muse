@@ -9,6 +9,7 @@ from src.musician.router import router as musician_router
 from src.performance.router import router as performance_router
 from src.record.router import router as record_router
 from src.release.router import router as release_router
+from src.config import cors_settings
 
 # --- FastAPI App ---
 app = FastAPI(
@@ -30,7 +31,10 @@ app.include_router(release_router)
 # --- CORS Middleware ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[]
+    allow_origins=cors_settings.allow_origins,
+    allow_credentials=cors_settings.allow_credentials,
+    allow_methods=cors_settings.allow_methods,
+    allow_headers=cors_settings.allow_headers
 )
 
 

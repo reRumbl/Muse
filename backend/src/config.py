@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from src.utils import get_env_file_path
+from src.utils import get_env_file_path, get_hosts_from_file
 
 
 class DatabaseSettings(BaseSettings):
@@ -34,7 +34,7 @@ class TestDatabaseSettings(BaseSettings):
 
 
 class CORSSettings(BaseSettings):
-    allow_origins: list[str] = []
+    allow_origins: list[str] = get_hosts_from_file()
     allow_credentials: bool = True
     allow_methods: list[str] = ['*']
     allow_headers: list[str] = ['*']

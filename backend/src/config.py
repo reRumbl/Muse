@@ -33,5 +33,13 @@ class TestDatabaseSettings(BaseSettings):
         return f'postgresql+asyncpg://{self.DBTEST_USER}:{self.DBTEST_PASS}@{self.DBTEST_HOST}:{self.DBTEST_PORT}/{self.DBTEST_NAME}'
 
 
+class CORSSettings(BaseSettings):
+    allow_origins: list[str] = []
+    allow_credentials: bool = True
+    allow_methods: list[str] = ['*']
+    allow_headers: list[str] = ['*']
+
+
 db_settings = DatabaseSettings()
 test_db_settings = TestDatabaseSettings()
+cors_settings = CORSSettings()

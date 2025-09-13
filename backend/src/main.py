@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.schemas import SuccessResponse
 from src.company.router import router as company_router
 from src.composition.router import router as composition_router
@@ -25,6 +26,12 @@ app.include_router(musician_router)
 app.include_router(performance_router)
 app.include_router(record_router)
 app.include_router(release_router)
+
+# --- CORS Middleware ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[]
+)
 
 
 # --- Root Endpoint ---

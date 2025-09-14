@@ -1,5 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter
+from src.auth.dependencies import OnlyAdminUserDep, CurrentUserDep
 from src.performance.schemas import PerformanceCreate, PerformanceUpdate, Performance
 from src.performance.dependencies import PerformanceServiceDep
 from src.schemas import SuccessResponse
@@ -10,7 +11,8 @@ router = APIRouter(prefix='/performances', tags=['performance'])
 @router.post('/', response_model=Performance)
 async def create_performance(
     performance_data: PerformanceCreate,
-    service: PerformanceServiceDep
+    service: PerformanceServiceDep,
+    user: OnlyAdminUserDep
 ):
     return await service.create(performance_data)
 
@@ -18,7 +20,8 @@ async def create_performance(
 @router.get('/{performance_id}', response_model=Performance)
 async def get_performance(
     performance_id: UUID,
-    service: PerformanceServiceDep
+    service: PerformanceServiceDep,
+    user: CurrentUserDep
 ):
     return await service.get(performance_id)
 
@@ -27,7 +30,8 @@ async def get_performance(
 async def update_performance(
     performance_id: UUID,
     performance_data: PerformanceUpdate,
-    service: PerformanceServiceDep
+    service: PerformanceServiceDep,
+    user: OnlyAdminUserDep
 ):
    
     return await service.update(performance_id, performance_data)
@@ -36,7 +40,8 @@ async def update_performance(
 @router.delete('/{performance_id}', response_model=SuccessResponse)
 async def delete_performance(
     performance_id: UUID,
-    service: PerformanceServiceDep
+    service: PerformanceServiceDep,
+    user: OnlyAdminUserDep
 ):
     await service.delete(performance_id)
     return SuccessResponse(message='Performance deleted')    

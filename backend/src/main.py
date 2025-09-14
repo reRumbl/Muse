@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.schemas import SuccessResponse
+from src.auth.router import router as auth_router
 from src.company.router import router as company_router
 from src.composition.router import router as composition_router
 from src.ensemble.router import router as ensemble_router
@@ -20,6 +21,7 @@ app = FastAPI(
 )
 
 # --- Routers ---
+app.include_router(auth_router)
 app.include_router(company_router)
 app.include_router(composition_router)
 app.include_router(ensemble_router)

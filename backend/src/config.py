@@ -33,6 +33,15 @@ class TestDatabaseSettings(BaseSettings):
         return f'postgresql+asyncpg://{self.DBTEST_USER}:{self.DBTEST_PASS}@{self.DBTEST_HOST}:{self.DBTEST_PORT}/{self.DBTEST_NAME}'
 
 
+class AuthSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=get_env_file_path(), extra='ignore')
+    
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int = 10080
+    JWT_SECRET_KEY: str = ''
+    JWT_ALGORITHM: str = 'HS256'
+
+
 class CORSSettings(BaseSettings):
     allow_origins: list[str] = get_hosts_from_file()
     allow_credentials: bool = True
@@ -42,4 +51,5 @@ class CORSSettings(BaseSettings):
 
 db_settings = DatabaseSettings()
 test_db_settings = TestDatabaseSettings()
+auth_settings = AuthSettings()
 cors_settings = CORSSettings()

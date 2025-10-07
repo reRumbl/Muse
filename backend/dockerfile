@@ -1,0 +1,38 @@
+# --- Base Stage ---
+FROM python:3.12.11-slim as base
+
+# Using a more complete sources.list for debian bookworm to avoid apt-get update errors
+RUN echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian bookworm-updates main" >> /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security bookworm-security main" >> /etc/apt/sources.list
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка Poetry
+RUN pip install poetry
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование файлов проекта
+COPY poetry.lock pyproject.toml ./
+
+# --- Build Stage ---
+FROM base as build
+
+# Установка зависимостей
+RUN poetry install --no-root
+
+# --- Final Stage ---
+FROM base
+
+# Копирование исходного кода
+COPY ./src /app/src
+COPY ./alembic /app/alembic
+COPY alembic.ini .env hosts.txt /app/
+
+# Запуск приложения
+CMD ["python3", "-m", "src.main"]

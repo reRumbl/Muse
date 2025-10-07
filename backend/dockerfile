@@ -29,10 +29,17 @@ RUN poetry install --no-root
 # --- Final Stage ---
 FROM base
 
+# Установка рабочей директории
+WORKDIR /app
+
 # Копирование исходного кода
-COPY ./src /app/src
-COPY ./alembic /app/alembic
+COPY src/ /app/src
+COPY alembic/ /app/alembic
 COPY alembic.ini .env hosts.txt /app/
+
+# Запуск миграций
+COPY migrate.sh /app/migrate.sh
+RUN chmod +x /app/migrate.sh
 
 # Запуск приложения
 CMD ["python3", "-m", "src.main"]

@@ -32,6 +32,9 @@ FROM base
 # Установка рабочей директории
 WORKDIR /app
 
+# Копирование виртуального окружения
+COPY --from=build /root/.cache/pypoetry/virtualenvs /root/.cache/pypoetry/virtualenvs
+
 # Копирование исходного кода
 COPY src/ /app/src
 COPY alembic/ /app/alembic

@@ -24,16 +24,13 @@ COPY poetry.lock pyproject.toml ./
 FROM base as build
 
 # Установка зависимостей
-RUN poetry install --no-root
+RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi --no-root
 
 # --- Final Stage ---
 FROM base
 
 # Установка рабочей директории
 WORKDIR /app
-
-# Копирование виртуального окружения
-COPY --from=build /root/.cache/pypoetry/virtualenvs /root/.cache/pypoetry/virtualenvs
 
 # Копирование исходного кода
 COPY src/ /app/src

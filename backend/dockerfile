@@ -27,7 +27,7 @@ FROM base as build
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi --no-root
 
 # --- Final Stage ---
-FROM base
+FROM build
 
 # Установка рабочей директории
 WORKDIR /app

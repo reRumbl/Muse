@@ -13,7 +13,6 @@ services:
             - DB_HOST=db
         depends_on:
             - db
-        command: ["alembic", "upgrade", "head"]
 
     db:
         image: postgres:15

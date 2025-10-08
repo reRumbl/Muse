@@ -42,4 +42,4 @@ COPY migrate.sh /app/migrate.sh
 RUN chmod +x /app/migrate.sh
 
 # Запуск приложения
-CMD ["python3", "-m", "src.main"]
+CMD ["alembic", "upgrade", "head", "&&", "python3", "-m", "src.main"]

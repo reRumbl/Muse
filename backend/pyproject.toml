@@ -31,6 +31,8 @@ packages = [{include = "backend", from = "src"}]
 pytest = "^8.4.2"
 pytest-asyncio = "^1.1.0"
 httpx = "^0.28.1"
+pylint = "^4.0.3"
+bandit = "^1.9.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

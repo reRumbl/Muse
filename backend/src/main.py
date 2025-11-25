@@ -43,7 +43,7 @@ app.add_middleware(
 # --- Root Endpoint ---
 @app.get('/')
 async def root():
-    return SuccessResponse(message='Wrong message!!!')
+    return SuccessResponse(message='This is Muse API')
 
 
 @app.get('/health')

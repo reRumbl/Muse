@@ -14,7 +14,6 @@ router = APIRouter(prefix='/ensembles', tags=['ensemble'])
 async def create_ensemble(
     ensemble_data: EnsembleCreate, 
     service: EnsembleServiceDep,
-    user: OnlyAdminUserDep
 ):
     return await service.create(ensemble_data)
 
@@ -24,7 +23,6 @@ async def add_member_to_ensemble(
     ensemble_id: UUID, 
     musician_id: UUID,
     service: EnsembleServiceDep,
-    user: OnlyAdminUserDep
 ):
     await service.add_member_to_ensemble(ensemble_id, musician_id)
     return SuccessResponse(message='Member added to ensemble') 
@@ -34,7 +32,6 @@ async def add_member_to_ensemble(
 async def get_ensemble(
     ensemble_id: UUID,
     service: EnsembleServiceDep,
-    user: CurrentUserDep
 ):
     return await service.get(ensemble_id)
 
@@ -43,7 +40,6 @@ async def get_ensemble(
 async def get_ensemble_compositions(
     ensemble_id: UUID,
     service: EnsembleServiceDep,
-    user: CurrentUserDep
 ):
     return await service.get_all_compositions(ensemble_id)
 
@@ -52,7 +48,6 @@ async def get_ensemble_compositions(
 async def get_ensemble_compositions_count(
     ensemble_id: UUID,
     service: EnsembleServiceDep,
-    user: CurrentUserDep
 ):
     compositions = await service.get_all_compositions(ensemble_id)
     return CountResponse(count=len(compositions))
@@ -62,7 +57,6 @@ async def get_ensemble_compositions_count(
 async def get_ensemble_records(
     ensemble_id: UUID,
     service: EnsembleServiceDep,
-    user: CurrentUserDep
 ):
     return await service.get_all_records(ensemble_id)
     
@@ -72,7 +66,6 @@ async def update_ensemble(
     ensemble_id: UUID,
     ensemble_data: EnsembleUpdate,
     service: EnsembleServiceDep,
-    user: OnlyAdminUserDep
 ):
     return await service.update(ensemble_id, ensemble_data)
 
@@ -81,7 +74,6 @@ async def update_ensemble(
 async def delete_ensemble(
     ensemble_id: UUID,
     service: EnsembleServiceDep,
-    user: OnlyAdminUserDep
 ):
     await service.delete(ensemble_id)
     return SuccessResponse(message='Ensemble deleted')

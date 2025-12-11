@@ -21,6 +21,7 @@ class MusicianModel(Base):
     
     name: Mapped[str]
     surname: Mapped[str]
+    description: Mapped[str]
     type: Mapped[MusicianType]
     
     ensembles: Mapped[list['EnsembleModel']] = relationship(

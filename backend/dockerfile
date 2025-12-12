@@ -1,5 +1,5 @@
 # --- Base Stage ---
-FROM python:3.12.11-slim as base
+FROM python:3.12.12-slim as base
 
 # Using a more complete sources.list for debian bookworm to avoid apt-get update errors
 RUN echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list && \

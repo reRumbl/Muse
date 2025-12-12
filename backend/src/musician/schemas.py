@@ -6,6 +6,7 @@ from src.musician.models import MusicianType
 class MusicianBase(BaseModel):
     name: str
     surname: str
+    description: str
     type: MusicianType
     
 
@@ -16,6 +17,7 @@ class MusicianCreate(MusicianBase):
 class MusicianUpdate(BaseModel):
     name: str | None = None
     surname: str | None = None
+    description: str | None = None
     type: MusicianType | None = None
 
 

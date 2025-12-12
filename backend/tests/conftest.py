@@ -123,7 +123,7 @@ async def add_member_to_ensemble_factory(ensemble_service: EnsembleService):
 @fixture(scope='function')
 async def create_musician_factory(musician_service: MusicianService):
     async def _create_musician(name: str = 'Test', surname: str = 'Musician', type: MusicianType = MusicianType.composer):
-        return await musician_service.create(MusicianCreate(name=name, surname=surname, type=type))
+        return await musician_service.create(MusicianCreate(name=name, surname=surname, description='description', type=type))
     return _create_musician
 
 
